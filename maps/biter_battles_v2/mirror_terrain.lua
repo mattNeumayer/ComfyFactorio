@@ -173,13 +173,15 @@ local function ocg (event)
 	for _, e in pairs(event.surface.find_entities_filtered{ area = event.area, force = "enemy" }) do
 		if e.valid then e.destroy() end
 	end
-
-	local x = ((event.area.left_top.x + 16) * -1) - 16
-	local y = ((event.area.left_top.y + 16) * -1) - 16
+	
+	-- When mirroring a bounding box, the original right_bottom corner becomes the new top_left corner, but with inverted sign.
+	-- Note: This is the left_top corner of the bounding box we will copy *from*
+	local inverted_left_top_x = -1 * event.area.right_bottom.x
+	local inverted_left_top_y = -1 * event.area.right_bottom.y
 
 	if not global.ctp then global.ctp = { continue = 1, last = 0 } end
 	local idx = global.ctp.last + 1
-	global.ctp[idx] = {x = x / 32, y = y / 32, state = 1}
+	global.ctp[idx] = {x = inverted_left_top_x / 32, y = inverted_left_top_y / 32, state = 1}
 	global.ctp.last = idx
 end
 
@@ -204,8 +206,8 @@ local function ticking_work()
 	}
 	local surface = game.surfaces["biter_battles"]
 	if not surface.is_chunk_generated(c) then
-		-- game.print("Chunk not generated yet, requesting..")
-		surface.request_to_generate_chunks({x = area.left_top.x - 16, y = area.left_top.y - 16}, 1)
+		-- game.print("Source chunk not generated yet, requesting (" .. c.x .. ", "  .. c.y .. ")...")
+		surface.request_to_generate_chunks({x = area.left_top.x + 16, y = area.left_top.y + 16}, 0)
 		return
 	end
 

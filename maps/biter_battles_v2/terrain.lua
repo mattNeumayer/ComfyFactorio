@@ -486,8 +486,7 @@ local function on_chunk_generated(event)
 		generate_scrap(event)
 	end
 
-	if global.bb_spawn_generated then return end
-	if game.tick > 0 then
+	if (not global.bb_spawn_generated) and (game.tick > 0) then
 		generate_potential_spawn_ore(surface)
 
 		local area = {{-10,-10},{10,10}}
@@ -505,6 +504,15 @@ local function on_chunk_generated(event)
 		end
 
 		global.bb_spawn_generated = true
+	end
+
+	-- Here we force generation of the mirrored chunk (south)
+	-- For balance reasons it is necessary to generate the same spawners on both sides at all times.
+	local inverted_left_top = {x = -1 * event.area.right_bottom.x, y = -1 * event.area.right_bottom.y}
+	local inverted_chunk_position = {x = inverted_left_top.x / 32, y = inverted_left_top.y / 32}
+	if not surface.is_chunk_generated(inverted_chunk_position) then
+		-- game.print("Requesting south chunk as well: " .. inverted_chunk_position.x .. ", "  .. inverted_chunk_position.y)
+		surface.request_to_generate_chunks({x = inverted_left_top.x + 16, y = inverted_left_top.y + 16}, 0)
 	end
 end
 
