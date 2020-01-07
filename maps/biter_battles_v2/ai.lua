@@ -35,9 +35,9 @@ local threat_values = {
 }
 
 -- these areas are for north
--- local left_spawner_area   = {left_top = {-2000, -1200}, right_bottom = {-800, -700}}
--- local right_spawner_area  = {left_top = {800,   -1200}, right_bottom = {2000, -700}}
--- local middle_spawner_area = {left_top = {-600,  -1000}, right_bottom = {600,  -400}}
+local left_spawner_area   = {left_top = {-2000, -1200}, right_bottom = {-800, -700}}
+local right_spawner_area  = {left_top = {800,   -1200}, right_bottom = {2000, -700}}
+local middle_spawner_area = {left_top = {-600,  -1000}, right_bottom = {600,  -400}}
 local whole_spawner_area  = {left_top = {-2048, -1400}, right_bottom = {2048, -400}}
 
 local function get_active_biter_count(biter_force_name)
