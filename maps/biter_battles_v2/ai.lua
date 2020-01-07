@@ -375,7 +375,6 @@ end
 
 
 Public.perform_main_attack = function()
-	print("perform_main_attack")
 	if global.main_attack_wave_amount > 0 then
 		local surface = game.surfaces["biter_battles"]
 		local force_name = global.next_attack
